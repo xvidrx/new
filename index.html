@@ -1,132 +1,280 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Video Gallery</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>XVideos Access - Multilingual</title>
   <style>
-    body {
-      font-family: sans-serif;
-      background: #111;
+    body, html {
+      margin: 0; padding: 0; width: 100%; height: 100%;
+      font-family: Arial, sans-serif;
+      background: url('fon.png') no-repeat center center fixed;
+      background-size: cover; color: #fff; overflow-x: hidden;
+      display: flex; justify-content: center; align-items: flex-start;
+    }
+
+    #container {
+      width: 60%; max-width: 1200px;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 20px; border-radius: 8px;
+      box-shadow: 0 7px 20px rgba(0, 0, 0, 0.5);
+      text-align: center; margin-top: 80px;
+    }
+
+    #google_translate_element {
+      display: none;
+    }
+
+    .heading {
+      font-size: 22px; font-weight: bold;
+      color: #ff4500; text-shadow: 1px 1px 7px #000;
+      margin-bottom: 15px;
+    }
+
+    .image-container {
+      margin: 15px 0; display: flex; justify-content: center; align-items: center;
+    }
+
+    .image-container img {
+      height: auto; max-width: 100%; object-fit: contain;
+      border-radius: 5px; cursor: pointer;
+    }
+
+    .password-container {
+      margin: 15px 0; color: #fff;
+      display: flex; flex-direction: column; align-items: center;
+    }
+
+    #password {
+      padding: 10px; width: 100%; max-width: 280px;
+      border-radius: 5px; border: 1px solid #ff4500;
+      background-color: #333; color: #fff;
+      font-size: 14px; text-align: center;
+      margin: 10px 0;
+    }
+
+    #generate-password, #copy-password {
+      padding: 10px 25px; margin-top: 8px;
+      font-size: 13px; color: #fff;
+      background-color: #ff4500;
+      border: none; border-radius: 5px;
+      cursor: pointer; transition: background-color 0.3s ease;
+      width: 100%; max-width: 280px;
+    }
+
+    #generate-password:hover, #copy-password:hover {
+      background-color: #ff6347;
+    }
+
+    .notification {
+      color: #28a745; font-size: 12px;
+      margin-top: 12px; display: none;
+      text-align: center; font-weight: bold;
+    }
+
+    #cta-button {
+      padding: 12px 30px; font-size: 14px; font-weight: bold;
       color: #fff;
-      margin: 0;
-      padding: 1rem;
+      background: linear-gradient(45deg, #a30303, #03a31e);
+      text-transform: uppercase;
+      border-radius: 5px; text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 3px 10px rgba(255, 69, 0, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      margin-top: 15px;
+      width: 100%; max-width: 280px;
     }
-    h1 {
-      text-align: center;
-      margin-bottom: 1rem;
+
+    #cta-button:hover {
+      transform: scale(1.03);
+      box-shadow: 0 7px 20px rgba(255, 69, 0, 0.5);
     }
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 1rem;
+
+    .steps p {
+      font-size: 13px; margin-top: 10px;
     }
-    .gallery a {
-      display: block;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-      transition: transform 0.2s, box-shadow 0.2s;
+
+    .number.notranslate {
+      font-weight: bold; color: #ff4500 !important;
     }
-    .gallery a:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+
+    .paste-password-text {
+      font-size: 13px; color: #ff4500;
+      margin: 0; text-align: center; font-weight: bold;
     }
-    .gallery img {
-      width: 100%;
-      height: auto;
-      display: block;
+
+    .sub-heading {
+      margin-top: 20px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #ff4500;
+    }
+
+    .modal {
+      display: none; position: fixed; z-index: 1000;
+      left: 0; top: 0; width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    .modal-content {
+      background-color: #222;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #ff4500;
+      width: 80%; max-width: 400px;
+      border-radius: 10px;
+      text-align: center; color: #fff;
+    }
+
+    .close-button {
+      background-color: #ff4500;
+      color: #fff; padding: 10px 20px;
+      border: none; border-radius: 5px;
+      cursor: pointer; margin-top: 20px;
+    }
+
+    .close-button:hover {
+      background-color: #ff6347;
+    }
+
+    .goog-te-banner-frame.skiptranslate,
+    body > .goog-te-banner-frame.skiptranslate {
+      display: none !important;
+    }
+
+    body { top: 0 !important; }
+
+    @media (max-width: 768px) {
+      #container {
+        width: 100%;
+        margin-top: 40px;
+        background: rgba(0, 0, 0, 0.6);
+        color: #fff;
+      }
+
+      .heading,
+      .sub-heading,
+      .paste-password-text,
+      .number.notranslate {
+        color: #ff4500 !important;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>🎬 Teen and More in HD</h1>
-  <div class="gallery">
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/vtesv53wo2ej_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/xsam013uxm5v_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/du6ycsoxj0dw_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/wslri19qbjsn_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/ooyw3g0lotv1_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/ryt7go4wmscs_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/k470e9e9cwkj_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/xjgu5lo75ruo_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/8i9xpb4m2yzq_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/ks3d3yaz9kqs_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/jc6pizrh63qx_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/1xze8xftcsbs_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/041y0ebfa5rp_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/tl2g2mom3lny_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/ewymn9yzzubc_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/jzcm4wciaqmn_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/8kyda0w6uhp3_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/uls7smi8slyd_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/rtp9jrlz8i43_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/qjaironsqiyc_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/mbiil0tzaql1_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/4len7fxujsj2_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/e127bkx8jx6q_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/3z2l1360ivnm_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/gkao23ampo7r_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/h89liky4xqpa_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/fjo1mv58zg6c_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/nkd44lusqjfw_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/097wlxnt69f5_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/au72jm387xm8_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/k6g15lesoofb_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/2retc5ca4gs8_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/5noybh1xfmyn_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/jw1tf6ku4jkc_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/7ocipyhpv2rr_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/2msf4i484nbd_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/45fzgzslzuce_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/mt1l4ngmjrp5_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/sse5l8csbjac_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/8yknvcga13ny_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/cqqesnsaxfn4_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/nh22x1qy63p4_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/1wtpqfbeu9k9_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/olyvt1cw3xp2_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/ec6y4c7j4425_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/axjdlzw2tnx2_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/dmjoqonf352d_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/4bhrogzoo5v6_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/jfvru2r3g2pv_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/ajtx96vphfgn_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/htplaknzvbz1_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/he6ee2i0zkxv_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/x0kkawqddi5m_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/fn3oj2tis5ca_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/up34rfeke9mq_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/9sl98ewrfp3t_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/hanx2r5n6nqq_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/4v29ugfhoehi_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/a7fg69x5qdap_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/bveylk8sr5si_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/k85gng857r3y_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/x9txp9rusfe2_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/kldzag3wczsv_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/scad2sv6id35_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/wiv4uk7xu9qm_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/kyp2lr05y8vm_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/hzualx2reqs4_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/27jlx1o95wmq_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/ihn14n5ndndn_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/0bvi8lg7l7zv_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/xazz1jvt9a5k_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/6bldjm64tjip_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/xmh3hun4466w_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/0mc5b8x7s6k9_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/nexeffydutnw_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/eiqaclezg8zk_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/ja0zz5kvtfw8_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/bmjwy3nn1768_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/7r200w5jan4d_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/8gdfjpuwxrwn_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/ola95tyrelsi_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/mk1xmm7je00n_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/apv1tcmfhv9q_t.jpg" alt="Video thumbnail" /></a>
-    <a href="https://shrinkme.ink/T0vQOkG" target="_blank"><img src="Image/fedd9vm9fyfj_t.jpg" alt="Video thumbnail" /></a>
+  <div id="container">
+    <div id="google_translate_element"></div>
 
+    <div class="heading">GET ACCESS TO WATCH FULL VIDEO WITHOUT ADS!</div>
+
+    <div class="image-container">
+      <img src="ai_bot.png" alt="AI Bot" id="openModal" loading="lazy">
+    </div>
+
+    <div class="steps">
+      <p class="paste-password-text">IT WON’T TAKE MORE THAN A MINUTE</p>
+      <p>__________________________________________</p>
+      <p><span class="number notranslate"></span>CHECK USING OUR E-MAIL</p>
+      <div class="password-container">
+        <input type="text" id="password" readonly placeholder="*****************"><br>
+        <button onclick="generatePassword()" id="generate-password">GET E-MAIL</button>
+        <button onclick="copyPassword()" id="copy-password">COPY E-MAIL</button>
+        <div class="notification" id="notification">copied!</div>
+      </div>
+    </div>
+
+    <div class="registration-container">
+      <h1 style="color: #ff4500; font-size: 16px;">ANSWER A FEW QUICK QUESTIONS</h1>
+      <p><span class="number notranslate"></span> CHOOSE ANY ANSWERS WITHOUT THINKING, IT DOESN’T MATTER</p>
+      <p><span class="number notranslate"></span> ENTER ANY USERNAME, PASTE THE EMAIL ADDRESS YOU GOT</p>
+      <h1 style="color: #ffae00; font-size: 18px;">THE XVideos ACCESS WILL OPEN AUTOMATICALLY!</h1>
+    <div class="image-container">
+	<img src="strip.png" alt="strip" loading="lazy">
+    </div>
+      <button id="cta-button">LET’S GET STARTED</button>	
+      <p>__________________________________________</p>
+      <p>YOU WILL GET</p>
+      <div class="sub-heading">490000+ EXCLUSIVE HD VIDEOS BY CATEGORY</div>
+      <div class="image-container">
+        <img src="ai_botfull.png" alt="AI Bot Full" loading="lazy">
+      </div>
+    </div>
   </div>
+
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <p>The full video will start automatically!</p>
+      <p class="paste-password-text">DETAILS BELOW</p>
+      <p>CONFIRM 18+!</p>
+      <button class="close-button" onclick="closeModal()">I'm 18 or older</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    document.getElementById("openModal").onclick = function () {
+      document.getElementById("myModal").style.display = "block";
+    };
+    function closeModal() {
+      document.getElementById("myModal").style.display = "none";
+    }
+
+    function generatePassword() {
+      const domains = [
+        "gmail.com", "yahoo.com", "outlook.com", "icloud.com",
+        "hotmail.com"
+      ];
+
+      const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+      const nameLength = Math.floor(Math.random() * 6) + 7;
+      let name = "";
+      for (let i = 0; i < nameLength; i++) {
+        name += chars[Math.floor(Math.random() * chars.length)];
+      }
+
+      const domain = domains[Math.floor(Math.random() * domains.length)];
+      const email = `${name}@${domain}`;
+
+      document.getElementById('password').value = email;
+    }
+
+    function copyPassword() {
+      const passwordField = document.getElementById('password');
+      navigator.clipboard.writeText(passwordField.value).then(() => {
+        document.getElementById('notification').style.display = 'block';
+        setTimeout(() => {
+          document.getElementById('notification').style.display = 'none';
+        }, 2000);
+      });
+    }
+
+    document.getElementById('cta-button').addEventListener('click', function (e) {
+      e.preventDefault();
+      window.open('https://prev.affomelody.com/click?pid=3749&offer_id=987&l=1749823210', '_blank');
+    });
+  </script>
+
+  <!-- Google Translate -->
+  <script>
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        autoDisplay: false
+      }, 'google_translate_element');
+
+      const userLang = navigator.language || navigator.userLanguage;
+      const langCode = userLang.split('-')[0];
+
+      const interval = setInterval(() => {
+        const select = document.querySelector('.goog-te-combo');
+        if (select) {
+          select.value = langCode;
+          select.dispatchEvent(new Event('change'));
+          clearInterval(interval);
+        }
+      }, 500);
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
